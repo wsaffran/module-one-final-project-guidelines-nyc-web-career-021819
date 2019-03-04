@@ -26,5 +26,5 @@ def choose_activity
    random_activity = RestClient.get("http://www.boredapi.com/api/activity?type=#{category}")
    activity_hash = JSON.parse(random_activity)
    puts activity_hash["activity"].downcase
-   Activity.create(name: activity_hash["activity"], accessibility: activity_hash["accessibility"], type: activity_hash["type"], participants: activity_hash["participants"], price: activity_hash["price"])
+   Activity.create(name: activity_hash["activity"], accessibility: activity_hash["accessibility"], category: activity_hash["type"], participants: activity_hash["participants"], price: activity_hash["price"])
 end

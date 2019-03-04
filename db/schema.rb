@@ -10,12 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190304224008) do
+ActiveRecord::Schema.define(version: 20190304203716) do
 
   create_table "activities", force: :cascade do |t|
     t.string  "name"
     t.float   "accessibility"
-    t.        "type"
+    t.string  "category"
     t.integer "participants"
     t.float   "price"
   end

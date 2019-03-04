@@ -3,7 +3,7 @@ class CreateActivities < ActiveRecord::Migration[5.0]
     create_table :activities do |t|
       t.string :name
       t.float :accessibility
-      t.string :type
+      t.string :category
       t.integer :participants
       t.float :price
     end
