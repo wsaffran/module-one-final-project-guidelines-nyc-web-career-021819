@@ -2,4 +2,7 @@ require_relative '../config/environment'
 
 
 
-puts "HELLO WORLD"
+
+welcome_user
+create_user_with_name
+choose_activity
