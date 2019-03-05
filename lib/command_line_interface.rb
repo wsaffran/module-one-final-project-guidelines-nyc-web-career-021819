@@ -18,6 +18,11 @@ def create_or_find_user_and_choose_activity
   if user_in_database?(response)
     puts "Welcome back, #{response.capitalize}!"
     puts "What would you like to do today?"
+    list_of_categories
+    category = gets.chomp.downcase
+    a = get_activity_from_api(category)
+    user = User.find_by(name: response)
+    UserActivity.create(user_id: user.id, activity_id: a.id)
   else
     puts "Welcome, #{response.capitalize}!"
     User.create(name: response)
