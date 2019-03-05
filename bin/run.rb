@@ -4,5 +4,4 @@ require_relative '../config/environment'
 
 
 welcome_user
-create_user_with_name
-choose_activity
+create_or_find_user_and_choose_activity
