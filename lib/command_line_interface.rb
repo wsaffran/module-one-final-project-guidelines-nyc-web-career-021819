@@ -4,27 +4,48 @@ def welcome_user
   puts "Welcome to BoredQuench: the Gatorade for Boredom. \nYou must be bored."
 end
 
-def create_user_with_name
-  puts "Please enter username:"
-  response = gets.chomp
-  puts "Welcome, #{response}!"
-  User.create(name: response)
+def user_in_database?(username)
+  if User.find_by(name: username) != nil
+    true
+  else
+    false
+  end
 end
 
-def choose_activity
+def create_or_find_user_and_choose_activity
+  puts "Please enter username:"
+  response = gets.chomp.downcase
+  if user_in_database?(response)
+    puts "Welcome back, #{response.capitalize}!"
+    puts "What would you like to do today?"
+    puts "Vi"
+  else
+    puts "Welcome, #{response.capitalize}!"
+    User.create(name: response)
+    list_of_activities
+    category = gets.chomp.downcase
+    a = get_activity_from_api(category)
+    UserActivity.create(user_id: User.find_by(name: response).id, activity_id: a.id)
+  end
+end
+
+def get_activity_from_api(option)
+  random_activity = RestClient.get("http://www.boredapi.com/api/activity?type=#{option}")
+  activity_hash = JSON.parse(random_activity)
+  puts activity_hash["activity"].downcase
+  x = Activity.find_or_create_by(name: activity_hash["activity"], accessibility: activity_hash["accessibility"], category: activity_hash["type"], participants: activity_hash["participants"], price: activity_hash["price"])
+  return x
+end
+
+def list_of_activities
   puts "Please specify the type of activity you'd like to try:
-   -Relaxation
-   -Cooking
-   -Education
-   -Social
-   -Charity
-   -Busywork
-   -DIY
-   -Music
-   -Recreational"
-   category = gets.chomp.downcase
-   random_activity = RestClient.get("http://www.boredapi.com/api/activity?type=#{category}")
-   activity_hash = JSON.parse(random_activity)
-   puts activity_hash["activity"].downcase
-   Activity.create(name: activity_hash["activity"], accessibility: activity_hash["accessibility"], category: activity_hash["type"], participants: activity_hash["participants"], price: activity_hash["price"])
+     -Relaxation
+     -Cooking
+     -Education
+     -Social
+     -Charity
+     -Busywork
+     -DIY
+     -Music
+     -Recreational"
 end
