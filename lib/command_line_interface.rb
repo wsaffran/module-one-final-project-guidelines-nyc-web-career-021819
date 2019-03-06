@@ -1,12 +1,11 @@
 require "pry"
+require 'artii'
 
 
 
 class CLI
 
   attr_accessor :user, :activity
-
-
 
   def run_program
     welcome_user
@@ -19,7 +18,9 @@ class CLI
   end
 
   def welcome_user
-    puts "Welcome to BoredQuench: the Gatorade for Boredom. \nYou must be bored.\n"
+    a = Artii::Base.new
+    puts a.asciify('BoredQuench').colorize(:light_green)
+    puts "Welcome to BoredQuench: the Gatorade for Boredom. \nYou must be bored.\n\n"
   end
 
   #helper method
@@ -150,7 +151,8 @@ class CLI
     useractivity = UserActivity.where(user_id: self.user.id)
     # binding.pry
     useractivity.each_with_index do |useractivity, index|
-      puts "#{index+1}. #{Activity.find_by(id: useractivity.activity_id).name}-----rating: #{UserActivity.find_by(id: useractivity.id).rating}"
+      activity = "#{index+1}. #{Activity.find_by(id: useractivity.activity_id).name}"
+      puts activity + "rating: #{UserActivity.find_by(id: useractivity.id).rating}".rjust(60 - activity.length)
     end
 
   end
