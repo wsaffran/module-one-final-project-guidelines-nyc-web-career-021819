@@ -1,6 +1,8 @@
 require "pry"
 require 'artii'
 
+
+
 class CLI
 
   attr_accessor :user, :activity
@@ -39,11 +41,11 @@ class CLI
     if user_in_database?(username)
       puts "Welcome back, #{username}"
       self.user= User.find_by(name: username)
-      puts "do you want to see your activities? [y/n]"
+      puts "Do you want to see your activities? [y/n]"
       response = gets.chomp.downcase
       if response == "y"
         view_user_activities
-        puts "ready to choose a new activity [y/n]"
+        puts "Ready to choose a new activity? [y/n]"
         response2 = gets.chomp.downcase
         if response2 != "y"
           puts "Goodbye, loser!"
@@ -73,7 +75,8 @@ class CLI
     "recreational"]
     category = gets.chomp.downcase
     if category_array.include?(category) == false
-      puts "Typo much? Here's what you get:"
+      puts "Typo much? Luckily for you, we know how to solve
+      your inability to spell!!  Here's an activity picked just for you:"
       create_activity_from_api_when_typo
       what_next?
       what_next_selections
@@ -89,8 +92,8 @@ class CLI
   end
 
   def what_next?
-    puts "\nwhat number would you like to do?"
-    puts "1. complete and rate activity\n2. find a new activity\n3. view completed activities\n4. exit\n"
+    puts "\nWhich number would you like to do?"
+    puts "1. Complete and rate activity\n2. Find a new activity\n3. View completed activities\n4. Exit\n"
 
   end
 
@@ -119,16 +122,16 @@ class CLI
 
     elsif answer == "4"
       puts "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-      puts "\nCongratulations #{self.user.name}! You're no longer bored! ... for now... \n"
+      puts "\nCongratulations, #{self.user.name}! You're no longer bored! ... for now\n"
     end
   end
 
   # method 1 to what_next_selections
   def add_to_activities
-    puts "please enter in a rating between 1.0-5.0"
+    puts "Please enter in a rating between 1.0-5.0"
     rating = gets.chomp
     if 1.0 > rating.to_f || rating.to_f > 5.0
-      puts "not a valid rating"
+      puts "Not a valid rating.  Next time, read the instructions, ok?"
       add_to_activities
     else
       x = UserActivity.find_by(user_id: self.user.id, activity_id: self.activity.id)
