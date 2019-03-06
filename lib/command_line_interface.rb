@@ -4,6 +4,8 @@ class CLI
 
   attr_accessor :user, :activity
 
+
+
   def run_program
     welcome_user
     get_username
@@ -36,6 +38,16 @@ class CLI
     if user_in_database?(username)
       puts "Welcome back, #{username}"
       self.user= User.find_by(name: username)
+      puts "do you want to see your activities? [y/n]"
+      response = gets.chomp.downcase
+      if response == "y"
+        return view_user_activities
+        # puts "ready to choose a new activity [y/n]"
+        # response2 = gets.chomp.downcase
+        # if response2 != "y"
+        #   exit!
+        # end
+      end
     else
       puts "Welcome, #{username}"
       self.user = User.create(name: username)
@@ -48,7 +60,20 @@ class CLI
 
   # helper method
   def get_category
+    category_array = ["relaxation",
+    "cooking",
+    "education",
+    "social",
+    "charity",
+    "busywork",
+    "diy",
+    "music",
+    "recreational"]
     category = gets.chomp.downcase
+    # if category_array.include?(category) == false
+    #   puts "Typo much? Please spell correctly.  Thank you."
+    #   get_category
+    # end
     category
   end
 
@@ -60,7 +85,7 @@ class CLI
 
   def what_next?
     puts "\nwhat number would you like to do?"
-    puts "1. complete activity\n2. find a new activity\n3. view completed activities\n4. exit\n"
+    puts "1. complete and rate activity\n2. find a new activity\n3. view completed activities\n4. exit\n"
 
   end
 
@@ -95,7 +120,20 @@ class CLI
 
   # method 1 to what_next_selections
   def add_to_activities
-    UserActivity.find_or_create_by(user_id: self.user.id, activity_id: self.activity.id)
+    puts "please enter in a rating between 1.0-5.0"
+    rating = gets.chomp
+    if 1.0 > rating.to_f || rating.to_f > 5.0
+      puts "not a valid rating"
+      add_to_activities
+    else
+      x = UserActivity.find_by(user_id: self.user.id, activity_id: self.activity.id)
+      if x != nil
+        x.delete
+        UserActivity.create(user_id: self.user.id, activity_id: self.activity.id, rating: rating.to_f)
+      else
+        UserActivity.find_or_create_by(user_id: self.user.id, activity_id: self.activity.id, rating: rating.to_f)
+      end
+    end
   end
 
   # method 3 to view all activities ***MAKE MORE EFFIECIENT***
@@ -105,7 +143,7 @@ class CLI
     useractivity = UserActivity.where(user_id: self.user.id)
     # binding.pry
     useractivity.each_with_index do |useractivity, index|
-      puts "#{index+1}. #{Activity.find_by(id: useractivity.activity_id).name}"
+      puts "#{index+1}. #{Activity.find_by(id: useractivity.activity_id).name}-----rating: #{UserActivity.find_by(id: useractivity.id).rating}"
     end
 
   end
