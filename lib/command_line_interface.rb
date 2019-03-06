@@ -70,10 +70,13 @@ class CLI
     "music",
     "recreational"]
     category = gets.chomp.downcase
-    # if category_array.include?(category) == false
-    #   puts "Typo much? Please spell correctly.  Thank you."
-    #   get_category
-    # end
+    if category_array.include?(category) == false
+      puts "Typo much? Here's what you get:"
+      create_activity_from_api_when_typo
+      what_next?
+      what_next_selections
+      exit!
+    end
     category
   end
 
@@ -163,6 +166,19 @@ class CLI
 
   def create_activity_from_api(option)
     random_activity = RestClient.get("http://www.boredapi.com/api/activity?type=#{option}")
+    activity_hash = JSON.parse(random_activity)
+    puts "\nActivity:           #{activity_hash["activity"]}
+
+    accessibility:      #{10 - activity_hash["accessibility"]*10}/10
+    participants:       #{activity_hash["participants"]}
+    price:              #{activity_hash["price"]*10}/10"
+
+    self.activity = Activity.find_or_create_by(name: activity_hash["activity"], accessibility: activity_hash["accessibility"], category: activity_hash["type"], participants: activity_hash["participants"], price: activity_hash["price"])
+    puts ""
+  end
+
+  def create_activity_from_api_when_typo
+    random_activity = RestClient.get("http://www.boredapi.com/api/activity")
     activity_hash = JSON.parse(random_activity)
     puts "\nActivity:           #{activity_hash["activity"]}
 
