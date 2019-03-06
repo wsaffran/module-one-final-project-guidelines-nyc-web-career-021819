@@ -41,12 +41,13 @@ class CLI
       puts "do you want to see your activities? [y/n]"
       response = gets.chomp.downcase
       if response == "y"
-        return view_user_activities
-        # puts "ready to choose a new activity [y/n]"
-        # response2 = gets.chomp.downcase
-        # if response2 != "y"
-        #   exit!
-        # end
+        view_user_activities
+        puts "ready to choose a new activity [y/n]"
+        response2 = gets.chomp.downcase
+        if response2 != "y"
+          puts "Goodbye, loser!"
+          exit!
+        end
       end
     else
       puts "Welcome, #{username}"
