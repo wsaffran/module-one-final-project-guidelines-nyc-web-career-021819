@@ -201,10 +201,10 @@ class CLI
   def calc_avg_rating
     array_of_ratings = UserActivity.where(activity_id: self.activity.id).map {|useractivity| useractivity.rating}
     user_activity_array_length = UserActivity.where(activity_id: self.activity.id).length
-    n = array_of_ratings.inject{|sum,x| sum + x}
     if user_activity_array_length == 0
       "No User Ratings Yet!"
     else
+      n = array_of_ratings.inject{|sum,x| sum + x}
       n.to_f/user_activity_array_length.to_f
     end
   end
