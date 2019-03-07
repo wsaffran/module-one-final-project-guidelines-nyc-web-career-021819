@@ -11,7 +11,6 @@ class CLI
   @pid = fork{ exec 'afplay', "I Hear The Calling (Instrumental Version).mp3" }
   end
 
-
   def run_program
     welcome_user
     get_username
@@ -66,6 +65,7 @@ class CLI
       run_2
     elsif response2 == "n"
       puts "Goodbye, loser!"
+      Process.kill("SIGKILL", @pid)
       exit!
     elsif response2 != "n" || "y"
       puts "I see a typo. Please try again!"
