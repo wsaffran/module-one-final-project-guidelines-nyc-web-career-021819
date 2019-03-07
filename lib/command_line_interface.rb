@@ -1,8 +1,6 @@
 require "pry"
 require 'artii'
 
-
-
 class CLI
 
   attr_accessor :user, :activity
@@ -11,6 +9,13 @@ class CLI
     welcome_user
     get_username
     find_or_create_user
+    # puts_list_of_categories
+    # select_category
+    # what_next?
+    # what_next_selections
+  end
+
+  def run_2
     puts_list_of_categories
     select_category
     what_next?
@@ -23,7 +28,6 @@ class CLI
     puts "Welcome to BoredQuench: the Gatorade for Boredom. \nYou must be bored.\n\n"
   end
 
-  #helper method
   def user_in_database?(user)
     if User.find_by(name: user) != nil
       true
@@ -36,33 +40,59 @@ class CLI
     print "Please enter username(eg. sharktazer29, aisforawesome123):"
   end
 
+  def if_user_exists_want_to_see_activities?
+    puts "Do you want to see your activities? [y/n]"
+    response = gets.chomp.downcase
+
+    if response == "y"
+      view_user_activities
+      ready_to_choose_a_new_activity?
+    elsif response == "n"
+      ready_to_choose_a_new_activity?
+    elsif response != "y" || response != "n"
+      puts "I see a typo. Please try again!"
+      if_user_exists_want_to_see_activities?
+    end
+  end
+
+  def ready_to_choose_a_new_activity?
+    puts "Ready to choose a new activity? [y,n]"
+    response2 = gets.chomp.downcase
+    if response2 == "y"
+      run_2
+    elsif response2 == "n"
+      puts "Goodbye, loser!"
+      exit!
+    elsif response2 != "n" || "y"
+      puts "I see a typo. Please try again!"
+      ready_to_choose_a_new_activity?
+    end
+  end
+
   def find_or_create_user
     username = gets.chomp
     if user_in_database?(username)
       puts "Welcome back, #{username}"
       self.user= User.find_by(name: username)
-      puts "Do you want to see your activities? [y/n]"
-      response = gets.chomp.downcase
-      if response == "y"
-        view_user_activities
-        puts "Ready to choose a new activity? [y/n]"
-        response2 = gets.chomp.downcase
-        if response2 != "y"
-          puts "Goodbye, loser!"
-          exit!
-        end
-      end
+      if_user_exists_want_to_see_activities?
+      # puts "Do you want to see your activities? [y/n]"
+      # response = gets.chomp.downcase
+      # if response == "y" || response == "yes"
+      #   view_user_activities
+      #   puts "Ready to choose a new activity? [y/n]"
+      #   response2 = gets.chomp.downcase
+      #   if response2 != "y" || response2 != "yes"
+      #     puts "Goodbye, loser!"
+      #     exit!
+      #   end
+      # end
     else
       puts "Welcome, #{username}"
       self.user = User.create(name: username)
+      run_2
     end
-    # @user = username
   end
 
-  ### Add function to ask user if they would like
-  ### to see their activity database
-
-  # helper method
   def get_category
     category_array = ["relaxation",
     "cooking",
@@ -86,14 +116,12 @@ class CLI
     category
   end
 
-##########################
   def select_category
     print "\nenter here: "
     create_activity_from_api(get_category)
     print_activity
     puts ""
   end
-##########################
 
   def what_next?
     puts "\nWhich number would you like to do?"
@@ -148,19 +176,17 @@ class CLI
     end
   end
 
-  # method 3 to view all activities ***MAKE MORE EFFIECIENT***
   def view_user_activities
     puts "\nYour Activities:\n"
     user_id = User.find_by(name: self.user.name).id
     useractivity = UserActivity.where(user_id: self.user.id)
     if useractivity.length == 0
-      puts "\nLooks like you don't have any activities yet!
-      "
+      puts "\nLooks like you don't have any activities yet!"
     else
-    useractivity.each_with_index do |useractivity, index|
-      activity = "#{index+1}. #{Activity.find_by(id: useractivity.activity_id).name}"
-      puts activity + "rating: #{UserActivity.find_by(id: useractivity.id).rating}".rjust(60 - activity.length)
-    end
+      useractivity.each_with_index do |useractivity, index|
+        activity = "#{index+1}. #{Activity.find_by(id: useractivity.activity_id).name}"
+        puts activity + "rating: #{UserActivity.find_by(id: useractivity.id).rating}".rjust(60 - activity.length)
+      end
     end
   end
 
@@ -220,5 +246,4 @@ class CLI
       "$" * price
     end
   end
-
 end
