@@ -16,7 +16,7 @@ class CLI
     get_username
     find_or_create_user
   end
-  
+
   def run_2
     puts_list_of_categories
     select_category
@@ -40,7 +40,7 @@ class CLI
   end
 
   def get_username
-    print "Please enter username(eg. sharktazer29, aisforawesome123):"
+    print "Please enter username(eg. sharktazer29, aisforawesome123) : "
   end
 
   def if_user_exists_want_to_see_activities?
@@ -152,6 +152,7 @@ class CLI
     elsif answer == "5"
       puts "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
       puts "\nCongratulations, #{self.user.name}! You're no longer bored! ... for now\n"
+      Process.kill("SIGKILL", @pid)
     end
   end
 
