@@ -6,7 +6,6 @@ class CLI
   attr_accessor :user, :activity
 
   def run_program
-    pid = fork{ exec 'afplay', "ES_I Hear The Calling (Instrumental Version) - Wildson.mp3" }
     welcome_user
     get_username
     find_or_create_user
@@ -17,7 +16,6 @@ class CLI
     select_category
     what_next?
     what_next_selections
-    pid = fork{ exec 'killall', "afplay" }
   end
 
   def welcome_user
@@ -73,17 +71,6 @@ class CLI
       puts "Welcome back, #{username}"
       self.user= User.find_by(name: username)
       if_user_exists_want_to_see_activities?
-      # puts "Do you want to see your activities? [y/n]"
-      # response = gets.chomp.downcase
-      # if response == "y" || response == "yes"
-      #   view_user_activities
-      #   puts "Ready to choose a new activity? [y/n]"
-      #   response2 = gets.chomp.downcase
-      #   if response2 != "y" || response2 != "yes"
-      #     puts "Goodbye, loser!"
-      #     exit!
-      #   end
-      # end
     else
       puts "Welcome, #{username}"
       self.user = User.create(name: username)
@@ -163,7 +150,6 @@ p.s. We apologize for the snarkiness.  It's been a long journey."
     end
   end
 
-  # method 1 to what_next_selections
   def add_to_activities
     puts "Please enter in a rating between 1.0-5.0"
     rating = gets.chomp
@@ -232,9 +218,6 @@ p.s. We apologize for the snarkiness.  It's been a long journey."
       n.to_f/user_activity_array_length.to_f
     end
   end
-
-
- 
 
   def print_activity
     puts "\nActivity:    #{self.activity.name}\n
