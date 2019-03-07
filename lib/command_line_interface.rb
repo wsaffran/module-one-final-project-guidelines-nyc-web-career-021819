@@ -5,6 +5,13 @@ class CLI
 
   attr_accessor :user, :activity
 
+  attr_reader :pid
+
+  def initialize
+  @pid = fork{ exec 'afplay', "I Hear The Calling (Instrumental Version).mp3" }
+  end
+
+
   def run_program
     welcome_user
     get_username
@@ -16,6 +23,7 @@ class CLI
     select_category
     what_next?
     what_next_selections
+    Process.kill("SIGKILL", @pid)
   end
 
   def welcome_user
@@ -96,6 +104,7 @@ class CLI
       print_activity
       what_next?
       what_next_selections
+      Process.kill("SIGKILL", @pid)
       exit!
     end
     category
