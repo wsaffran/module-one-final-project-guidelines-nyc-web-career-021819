@@ -4,11 +4,10 @@ require 'artii'
 class CLI
 
   attr_accessor :user, :activity
-
   attr_reader :pid
 
   def initialize
-  @pid = fork{ exec 'afplay', "I Hear The Calling (Instrumental Version).mp3" }
+    @pid = fork{ exec 'afplay', "I Hear The Calling (Instrumental Version).mp3" }
   end
 
   def run_program
@@ -225,7 +224,7 @@ class CLI
     Accessibility:       #{100 - (self.activity.accessibility * 100)}%
     Participants:        #{self.activity.participants}
     Price:               #{price_in_dollars}
-    Avg Rating:          #{calc_avg_rating}".colorize(:light_white)
+    Avg Rating:          #{calc_avg_rating}"
   end
 
   def price_in_dollars
