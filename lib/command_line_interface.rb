@@ -16,7 +16,7 @@ class CLI
     get_username
     find_or_create_user
   end
-
+  
   def run_2
     puts_list_of_categories
     select_category
