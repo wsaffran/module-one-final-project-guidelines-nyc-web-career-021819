@@ -10,4 +10,3 @@ gem "rest-client"
 gem "ruby-progressbar"
 gem "artii"
 gem "colorize"
-
