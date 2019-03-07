@@ -27,7 +27,7 @@ class CLI
   def welcome_user
     a = Artii::Base.new
     puts a.asciify('BoredQuench').colorize(:light_green)
-    puts "Welcome to BoredQuench: the Gatorade for Boredom. \nYou must be bored.\n\n"
+    puts "Welcome to BoredQuench: the Gatorade for Boredom. \n\nYou must be bored.\n\n"
   end
 
   def user_in_database?(user)
@@ -97,8 +97,7 @@ class CLI
     "recreational"]
     category = gets.chomp.downcase
     if category_array.include?(category) == false
-      puts "Typo much? Luckily for you, we know how to solve
-      your inability to spell!!  Here's an activity picked just for you:"
+      puts "\nTypo much? Luckily for you, we know how to solve \nyour inability to spell!!  Here's an activity picked just for you:"
       create_activity_from_api_when_typo
       print_activity
       what_next?
@@ -150,7 +149,7 @@ class CLI
 
     elsif answer == "5"
       puts "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-      puts "\nCongratulations, #{self.user.name}! You're no longer bored! ... for now\n".colorize(:yellow)
+      puts "\nCongratulations, #{self.user.name}! You're no longer bored!...for now...\n".colorize(:yellow)
       Process.kill("SIGKILL", @pid)
 
     end
@@ -160,7 +159,7 @@ class CLI
     puts "\nPlease enter in a rating between 1.0-5.0\n\n".colorize(:yellow)
     rating = gets.chomp
     if 1.0 > rating.to_f || rating.to_f > 5.0
-      puts "Not a valid rating.  Next time, read the instructions, ok?"
+      puts "\nNot a valid rating.  Next time, read the instructions, ok?"
       add_to_activities
     else
       x = UserActivity.find_by(user_id: self.user.id, activity_id: self.activity.id)
@@ -182,7 +181,7 @@ class CLI
     else
       useractivity.each_with_index do |useractivity, index|
         activity = "#{index+1}. #{Activity.find_by(id: useractivity.activity_id).name}"
-        puts activity + "rating: #{UserActivity.find_by(id: useractivity.id).rating}".rjust(60 - activity.length)
+        puts activity + "rating: #{UserActivity.find_by(id: useractivity.id).rating}".rjust(90 - activity.length)
       end
     end
   end
