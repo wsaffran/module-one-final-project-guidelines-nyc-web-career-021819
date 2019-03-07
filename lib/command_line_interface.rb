@@ -220,7 +220,7 @@ class CLI
 
   def print_activity
     puts "\nActivity:    #{self.activity.name}\n
-    Accessibility:       #{100 - (self.activity.accessibility * 100)}%
+    Difficulty:          #{(self.activity.accessibility * 10).to_i}/10
     Participants:        #{self.activity.participants}
     Price:               #{price_in_dollars}
     Avg Rating:          #{calc_avg_rating}"
