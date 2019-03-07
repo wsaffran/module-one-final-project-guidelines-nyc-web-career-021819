@@ -136,7 +136,7 @@ class CLI
       what_next?
       what_next_selections
     elsif answer =="4"
-      puts "BoredQuench was created to help the world conquer boredom.\n No one should ever be bored.  Now you don't have to be.\np.s. We apologize for the snarkiness.  It's been a long journey."
+      puts "BoredQuench was created to help the world conquer boredom.\nNo one should ever be bored. Now you don't have to be.\np.s. We apologize for the snarkiness. It's been a long journey."
       what_next?
       what_next_selections
 
