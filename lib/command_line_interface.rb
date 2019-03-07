@@ -37,7 +37,7 @@ class CLI
   end
 
   def if_user_exists_want_to_see_activities?
-    puts "Do you want to see your activities? [y/n]"
+    print "Do you want to see your activities? [y/n] : "
     response = gets.chomp.downcase
 
     if response == "y"
@@ -52,7 +52,7 @@ class CLI
   end
 
   def ready_to_choose_a_new_activity?
-    puts "Ready to choose a new activity? [y,n]"
+    print "\nReady to choose a new activity? [y,n] : "
     response2 = gets.chomp.downcase
     if response2 == "y"
       run_2
@@ -68,7 +68,7 @@ class CLI
   def find_or_create_user
     username = gets.chomp
     if user_in_database?(username)
-      puts "Welcome back, #{username}"
+      puts "\nWelcome back, #{username}!"
       self.user= User.find_by(name: username)
       if_user_exists_want_to_see_activities?
     else
@@ -109,8 +109,8 @@ class CLI
   end
 
   def what_next?
-    puts "\nWhich number would you like to do?"
-    puts "1. Complete and rate activity\n2. Find a new activity\n3. View completed activities\n4. About\n5. Exit\n"
+    puts "\nWhich number would you like to do?\n\n"
+    puts "1. Complete and rate activity\n2. Find a new activity\n3. View completed activities\n4. About\n5. Exit\n\n"
   end
 
   def what_next_selections
@@ -136,7 +136,7 @@ class CLI
       what_next?
       what_next_selections
     elsif answer =="4"
-      puts "BoredQuench was created to help the world conquer boredom.\nNo one should ever be bored. Now you don't have to be.\np.s. We apologize for the snarkiness. It's been a long journey."
+      puts "\nBoredQuench was created to help the world conquer boredom.\nNo one should ever be bored. Now you don't have to be.\np.s. We apologize for the snarkiness. It's been a long journey."
       what_next?
       what_next_selections
 
@@ -147,7 +147,7 @@ class CLI
   end
 
   def add_to_activities
-    puts "Please enter in a rating between 1.0-5.0"
+    puts "\nPlease enter in a rating between 1.0-5.0\n\n"
     rating = gets.chomp
     if 1.0 > rating.to_f || rating.to_f > 5.0
       puts "Not a valid rating.  Next time, read the instructions, ok?"
@@ -164,7 +164,7 @@ class CLI
   end
 
   def view_user_activities
-    puts "\nYour Activities:\n"
+    puts "\nYour Activities:\n\n"
     user_id = User.find_by(name: self.user.name).id
     useractivity = UserActivity.where(user_id: self.user.id)
     if useractivity.length == 0
@@ -178,16 +178,10 @@ class CLI
   end
 
   def puts_list_of_categories
-    puts "\nPlease specify the type of activity you'd like to try:
-    -Relaxation
-    -Cooking
-    -Education
-    -Social
-    -Charity
-    -Busywork
-    -DIY
-    -Music
-    -Recreational"
+    puts "\nPlease specify the type of activity you'd like to try:\n
+    -Relaxation     -Busywork     -Recreational
+    -Cooking        -Charity      -Social
+    -Education      -DIY          -Music"
   end
 
   def create_activity_from_api(option)
@@ -217,7 +211,7 @@ class CLI
 
   def print_activity
     puts "\nActivity:    #{self.activity.name}\n
-    Accessability:       #{self.activity.accessibility}
+    Accessability:       #{100 - (self.activity.accessibility * 100)}%
     Participants:        #{self.activity.participants}
     Price:               #{price_in_dollars}
     Avg Rating:          #{calc_avg_rating}"
