@@ -78,6 +78,7 @@ class CLI
       puts "Typo much? Luckily for you, we know how to solve
       your inability to spell!!  Here's an activity picked just for you:"
       create_activity_from_api_when_typo
+      print_activity
       what_next?
       what_next_selections
       exit!
@@ -190,11 +191,24 @@ class CLI
     puts ""
   end
 
+  def calc_avg_rating
+    array_of_ratings = UserActivity.where(activity_id: self.activity.id).map {|useractivity| useractivity.rating}
+    user_activity_array_length = UserActivity.where(activity_id: self.activity.id).length
+    n = array_of_ratings.inject{|sum,x| sum + x}
+    if user_activity_array_length == 0
+      "No User Ratings Yet!"
+    else
+      n.to_f/user_activity_array_length.to_f
+    end
+  end
+
   def print_activity
+
     puts "\nActivity:    #{self.activity.name}\n
     Accessability:       #{self.activity.accessibility}
     Participants:        #{self.activity.participants}
-    Price:               #{price_in_dollars}"
+    Price:               #{price_in_dollars}
+    Avg Rating:          #{calc_avg_rating}"
   end
 
   def price_in_dollars
