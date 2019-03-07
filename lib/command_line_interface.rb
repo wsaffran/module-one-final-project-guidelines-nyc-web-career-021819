@@ -43,7 +43,7 @@ class CLI
   end
 
   def if_user_exists_want_to_see_activities?
-    print "Do you want to see your activities? [y/n] : ".colorize(:yellow)
+    print "\nDo you want to see your activities? [y/n] : ".colorize(:yellow)
     response = gets.chomp.downcase
 
     if response == "y"
@@ -63,7 +63,7 @@ class CLI
     if response2 == "y"
       run_2
     elsif response2 == "n"
-      puts "Goodbye, loser!".colorize(:yellow)
+      puts "\nOkay. Goodbye, loser!".colorize(:yellow)
       Process.kill("SIGKILL", @pid)
       exit!
     elsif response2 != "n" || "y"
@@ -151,7 +151,6 @@ class CLI
       puts "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
       puts "\nCongratulations, #{self.user.name}! You're no longer bored!...for now...\n".colorize(:yellow)
       Process.kill("SIGKILL", @pid)
-
     end
   end
 
@@ -214,13 +213,14 @@ class CLI
       "No User Ratings Yet!"
     else
       n = array_of_ratings.inject{|sum,x| sum + x}
-      n.to_f/user_activity_array_length.to_f
+      w = n.to_f/user_activity_array_length.to_f
+      w.round(1)
     end
   end
 
   def print_activity
     puts "\nActivity:    #{self.activity.name}\n
-    Difficulty:          #{(self.activity.accessibility * 10).to_i}/10
+    Accessibility:       #{100 - (self.activity.accessibility * 100).to_i}%
     Participants:        #{self.activity.participants}
     Price:               #{price_in_dollars}
     Avg Rating:          #{calc_avg_rating}"
