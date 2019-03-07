@@ -152,6 +152,8 @@ class CLI
     elsif answer == "5"
       puts "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
       puts "\nCongratulations, #{self.user.name}! You're no longer bored! ... for now\n".colorize(:yellow)
+      Process.kill("SIGKILL", @pid)
+
     end
   end
 
