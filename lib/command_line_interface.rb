@@ -85,11 +85,14 @@ class CLI
     category
   end
 
+##########################
   def select_category
     print "\nenter here: "
     create_activity_from_api(get_category)
+    print_activity
     puts ""
   end
+##########################
 
   def what_next?
     puts "\nWhich number would you like to do?"
@@ -176,14 +179,6 @@ class CLI
   def create_activity_from_api(option)
     random_activity = RestClient.get("http://www.boredapi.com/api/activity?type=#{option}")
     activity_hash = JSON.parse(random_activity)
-    n = ((activity_hash["price"]*10).floor)
-
-    puts "\nActivity:           #{activity_hash["activity"]}
-
-    accessibility:      #{10 - activity_hash["accessibility"]*10}/10
-    participants:       #{activity_hash["participants"]}
-    price:              #{hideous_code(n)}"
-
     self.activity = Activity.find_or_create_by(name: activity_hash["activity"], accessibility: activity_hash["accessibility"], category: activity_hash["type"], participants: activity_hash["participants"], price: activity_hash["price"])
     puts ""
   end
@@ -191,53 +186,25 @@ class CLI
   def create_activity_from_api_when_typo
     random_activity = RestClient.get("http://www.boredapi.com/api/activity")
     activity_hash = JSON.parse(random_activity)
-    n = ((activity_hash["price"]*10).floor)
-    puts "\nActivity:           #{activity_hash["activity"]}
-
-    accessibility:      #{10 - activity_hash["accessibility"]*10}/10
-    participants:       #{activity_hash["participants"]}
-    price:              #{hideous_code(n)}"
-
     self.activity = Activity.find_or_create_by(name: activity_hash["activity"], accessibility: activity_hash["accessibility"], category: activity_hash["type"], participants: activity_hash["participants"], price: activity_hash["price"])
     puts ""
   end
 
-  def hideous_code(n)
-    if n == 0
-      n = n.to_s
-      n = "This activity is free!!! :)"
-    elsif n == 1
-      n = n.to_s
-      n = "$"
-    elsif n == 2
-      n = n.to_s
-      n = "$$"
-    elsif n == 3
-      n = n.to_s
-      n = "$$$"
-    elsif n == 4
-      n = n.to_s
-      n = "$$$$"
-    elsif n == 5
-      n = n.to_s
-      n = "$$$$$"
-    elsif n == 6
-      n = n.to_s
-      n = "$$$$$$"
-    elsif n == 7
-      n = n.to_s
-      n = "$$$$$$$"
-    elsif n == 8
-      n = n.to_s
-      n = "$$$$$$$$"
-    elsif n == 9
-      n = n.to_s
-      n = "$$$$$$$$$"
-    elsif n == 10
-      n = n.to_s
-      n = "$$$$$$$$$$"
+  def print_activity
+    puts "\nActivity:    #{self.activity.name}\n
+    Accessability:       #{self.activity.accessibility}
+    Participants:        #{self.activity.participants}
+    Price:               #{price_in_dollars}"
+  end
+
+  def price_in_dollars
+    price = self.activity.price * 10
+    price = price.to_i
+    if price == 0
+      "This activity is free!!!"
+    else
+      "$" * price
     end
-    n
   end
 
 end
