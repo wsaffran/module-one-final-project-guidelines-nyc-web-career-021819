@@ -93,13 +93,13 @@ class CLI
 
   def what_next?
     puts "\nWhich number would you like to do?"
-    puts "1. Complete and rate activity\n2. Find a new activity\n3. View completed activities\n4. Exit\n"
+    puts "1. Complete and rate activity\n2. Find a new activity\n3. View completed activities\n4. About\n5. Exit\n"
 
   end
 
   def what_next_selections
     answer = gets.chomp
-    if answer != "1" && answer != "2" && answer != "3" && answer != "4"
+    if answer != "1" && answer != "2" && answer != "3" && answer != "4"  && answer != "5"
       puts "\nHello?!?!? ARE YOU BLIND??? ENTER A NUMBER 1 - 4"
       what_next?
       what_next_selections
@@ -119,8 +119,15 @@ class CLI
       puts ""
       what_next?
       what_next_selections
+    elsif answer =="4"
+      puts "BoredQuench was created to help the world conquer boredom.
+No one should ever be bored.  Now you don't have to be.
 
-    elsif answer == "4"
+p.s. We apologize for the snarkiness.  It's been a long journey."
+      what_next?
+      what_next_selections
+
+    elsif answer == "5"
       puts "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
       puts "\nCongratulations, #{self.user.name}! You're no longer bored! ... for now\n"
     end
@@ -239,5 +246,17 @@ class CLI
     end
     n
   end
+
+  # def helper
+  #   response = gets.chomp.downcase
+  #   if response == "y"
+  #     puts "Goodbye, loser!"
+  #     exit!
+  #   else
+  #     if response != "y" && response !="n"
+  #       puts "try again"
+  #     end
+  #   end
+  # end
 
 end
