@@ -6,6 +6,7 @@ class CLI
   attr_accessor :user, :activity
 
   def run_program
+    pid = fork{ exec 'afplay', "ES_I Hear The Calling (Instrumental Version) - Wildson.mp3" }
     welcome_user
     get_username
     find_or_create_user
@@ -20,6 +21,7 @@ class CLI
     select_category
     what_next?
     what_next_selections
+    pid = fork{ exec 'killall', "afplay" }
   end
 
   def welcome_user
